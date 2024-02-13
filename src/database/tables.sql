@@ -1,33 +1,26 @@
 BEGIN;
 
-CREATE TABLE users (
-  id_user SERIAL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  cpf VARCHAR(14),
-  cnpj VARCHAR(18),
+CREATE TYPE ROLES AS ENUM ('lojista', 'comum');
+
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  fristName VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  document VARCHAR(14) UNIQUE NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL
+  password VARCHAR(255) NOT NULL,
+  balance INT
+  role ROLES NOT NULL
 );
 
-CREATE TABLE roles (
-  id_role SERIAL PRIMARY KEY,
-  name_role VARCHAR(100) NOT NULL
-);
-
-INSERT INTO
-  roles (name_role)
-VALUES
-  ("comum");
-
-INSERT INTO
-  roles (name_role)
-VALUES
-  ("lojista");
-
-CREATE TABLE users_roles (
-  id_user INTEGER REFERENCES users(id_user) DEFERRABLE INITIALLY DEFERRED,
-  id_role INTEGER REFERENCES roles(id_role) DEFERRABLE INITIALLY DEFERRED,
-  PRIMARY KEY (id_user, id_role)
+CREATE TABLE IF NOT EXISTS transactions (
+  id SERIAL PRIMARY KEY,
+  payer INT NOT NULL,
+  payee INT NOT NULL,
+  transfer_value NUMERIC(10, 2) NOT NULL,
+  data_transacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (payer) REFERENCES users(id),
+  FOREIGN KEY (payee) REFERENCES users(id)
 );
 
 COMMIT;

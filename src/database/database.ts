@@ -1,5 +1,5 @@
 import pg from "pg";
-import { readFileSync } from "fs";
+import fs from "fs";
 
 const pool = new pg.Pool({
   host: process.env.POSTGRE_HOST,
@@ -11,7 +11,8 @@ const pool = new pg.Pool({
 
 const createTables = async () => {
   try {
-    const sqlScript = readFileSync("./tables.sql").toString();
+    const sqlScript = fs.readFileSync("./src/database/tables.sql").toString();
+
     await pool.query(sqlScript);
     console.log("Tabelas criadas com sucesso");
   } catch (error) {

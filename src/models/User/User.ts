@@ -3,6 +3,7 @@ export enum UserType {
   LOJISTA = "lojista",
 }
 export class User {
+  id?: number;
   fristName: string;
   lastName: string;
   document: string;

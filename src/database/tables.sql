@@ -1,7 +1,5 @@
 BEGIN;
 
-CREATE TYPE ROLES AS ENUM ('lojista', 'comum');
-
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   fristName VARCHAR(255) NOT NULL,
@@ -9,8 +7,8 @@ CREATE TABLE IF NOT EXISTS users (
   document VARCHAR(14) UNIQUE NOT NULL,
   email VARCHAR(255) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
-  balance INT
-  role ROLES NOT NULL
+  balance INT,
+  userType VARCHAR(7) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS transactions (

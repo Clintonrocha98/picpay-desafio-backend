@@ -16,6 +16,7 @@ export class UserRepository implements IUserRepository {
       "INSERT INTO users (fristName, lastName, document, balance, email, password, userType) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
       [fristName, lastName, document, balance, email, password, userType]
     );
+
     return newTool.rows[0];
   }
 

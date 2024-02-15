@@ -14,7 +14,6 @@ export class UserController {
       password,
       userType,
     } = req.body;
-
     const nUser = await this.userService.newUser({
       fristName,
       lastName,

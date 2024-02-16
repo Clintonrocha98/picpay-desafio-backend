@@ -15,10 +15,11 @@ CREATE TABLE IF NOT EXISTS transactions (
   id SERIAL PRIMARY KEY,
   payer INT NOT NULL,
   payee INT NOT NULL,
-  transfer_value NUMERIC(10, 2) NOT NULL,
-  data_transacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  amount NUMERIC(10, 2) NOT NULL,
+  date_transaction TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (payer) REFERENCES users(id),
   FOREIGN KEY (payee) REFERENCES users(id)
 );
+
 
 COMMIT;

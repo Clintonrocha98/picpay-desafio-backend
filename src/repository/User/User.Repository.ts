@@ -10,11 +10,11 @@ export class UserRepository implements IUserRepository {
     balance,
     email,
     password,
-    userType,
+    usertype,
   }: User): Promise<User> {
     const newTool = await pool.query<User>(
-      "INSERT INTO users (fristName, lastName, document, balance, email, password, userType) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [fristName, lastName, document, balance, email, password, userType]
+      "INSERT INTO users (fristName, lastName, document, balance, email, password, usertype) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [fristName, lastName, document, balance, email, password, usertype]
     );
 
     return newTool.rows[0];

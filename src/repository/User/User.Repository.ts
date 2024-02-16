@@ -21,25 +21,24 @@ export class UserRepository implements IUserRepository {
   }
 
   async userById(id: number): Promise<User> {
-    const user = await pool.query<User>("SELECT * FROM users WHERE $1", [id]);
-    return user.rows[0];
-  }
-  async userByEmail(email: string): Promise<User> {
-    const user = await pool.query<User>("SELECT * FROM users WHERE $1", [
-      email,
+    const user = await pool.query<User>("SELECT * FROM users WHERE id = $1", [
+      id,
     ]);
     return user.rows[0];
   }
-  async userExist(id: number): Promise<boolean> {
-    const exist = await pool.query<User>("SELECT FROM users WHERE id = $1", [
-      id,
+
+  async emailExist(email: string): Promise<boolean> {
+    const exist = await pool.query<User>("SELECT FROM users WHERE email = $1", [
+      email,
     ]);
     return exist.rows.length === 0;
   }
-  async users(): Promise<User[]> {
-    const user = await pool.query<User[] | []>(
-      "SELECT * FROM users ORDER BY id ASC"
+
+  async documentExist(document: string): Promise<boolean> {
+    const exist = await pool.query<User>(
+      "SELECT FROM users WHERE document = $1",
+      [document]
     );
-    return user.rows[0];
+    return exist.rows.length === 0;
   }
 }

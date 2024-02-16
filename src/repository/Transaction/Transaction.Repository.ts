@@ -5,30 +5,26 @@ import { ITransactionRepository } from "./ITransaction.Repository";
 export class TransactionRepository implements ITransactionRepository {
   async saveTransaction({
     amount,
-    sender,
-    receiver,
-    timestamp,
+    payer,
+    payee,
+    date_transaction,
   }: Transaction): Promise<Transaction> {
     const newTool = await pool.query<Transaction>(
-      "INSERT INTO transactions (amount, sender,receiver,timestamp) VALUES ($1, $2, $3, $4) RETURNING *",
-      [amount, sender, receiver, timestamp]
+      "INSERT INTO transactions (amount, payer, payee, date_transaction) VALUES ($1, $2, $3, $4) RETURNING *",
+      [amount, payer, payee, date_transaction]
     );
-
     return newTool.rows[0];
   }
-  async receiveUpdatebalance(
-    recipient_id: number,
-    amount: number
-  ): Promise<void> {
+  async payeeUpdatebalance(payee_id: number, amount: number): Promise<void> {
     await pool.query("UPDATE users SET balance = balance + $1 WHERE id = $2", [
       amount,
-      recipient_id,
+      payee_id,
     ]);
   }
-  async senderUpdatebalance(sender_id: number, amount: number): Promise<void> {
+  async payerUpdatebalance(payer_id: number, amount: number): Promise<void> {
     await pool.query("UPDATE users SET balance = balance - $1 WHERE id = $2", [
       amount,
-      sender_id,
+      payer_id,
     ]);
   }
 }

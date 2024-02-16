@@ -1,8 +1,4 @@
-export enum UserType {
-  COMUM = "comum",
-  LOJISTA = "lojista",
-}
-export class User {
+export type User = {
   id?: number;
   fristName: string;
   lastName: string;
@@ -10,5 +6,5 @@ export class User {
   password: string;
   email: string;
   balance: number;
-  userType: UserType;
-}
+  usertype: "comum" | "lojista";
+};

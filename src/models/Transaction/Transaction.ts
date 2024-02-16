@@ -1,7 +1,7 @@
-export class Transaction {
+export type Transaction = {
   id?: number;
   amount: number;
-  sender: string;
-  receiver: string;
-  timestamp: Date;
+  payer: string;
+  payee: string;
+  date_transaction?: Date;
 }

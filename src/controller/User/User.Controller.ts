@@ -12,23 +12,18 @@ export class UserController {
       balance,
       email,
       password,
-      userType,
+      usertype,
     } = req.body;
-    const nUser = await this.userService.newUser({
+    const NewUser = await this.userService.newUser({
       fristName,
       lastName,
       document,
       balance,
       email,
       password,
-      userType,
+      usertype,
     });
 
-    res.status(201).json(nUser);
-  }
-  async userById(req: Request, res: Response) {
-    const { id } = req.params;
-    const tool = await this.userService.userById(Number(id));
-    res.status(200).json(tool);
+    res.status(201).json(NewUser);
   }
 }

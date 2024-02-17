@@ -65,15 +65,7 @@ export class TransactionService {
       date_transaction: new Date(),
     });
 
-    const emailNotification = await this.notificationService.notification(
-      userPayer,
-      userPayee,
-      amount
-    );
-
-    if (!emailNotification) {
-      console.log("Problema ao enviar a notificação pelo email");
-    }
+    await this.notificationService.notification(userPayer, userPayee, amount);
 
     return transaction;
   }

@@ -2,11 +2,7 @@ import { User } from "../../../models/user/User";
 import { NotificationService } from "./IExternalNotification.Service";
 
 export class ExternalNotificationService implements NotificationService {
-  async notification(
-    payer: User,
-    payee: User,
-    amount: number
-  ): Promise<boolean> {
+  async notification(payer: User, payee: User, amount: number): Promise<void> {
     const response = await fetch(
       "https://run.mocky.io/v3/54dc2cf1-3add-45b5-b5a9-6bf7e7f1f4a6"
     );
@@ -25,7 +21,8 @@ export class ExternalNotificationService implements NotificationService {
         )}
         `
       );
+    } else {
+      console.log("Problema ao enviar a notificação pelo email");
     }
-    return data.message;
   }
 }

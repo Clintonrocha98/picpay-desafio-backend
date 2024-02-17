@@ -10,16 +10,21 @@ import {
 } from "./Error/Transaction.Error";
 import { ExternalAuthorizationService } from "./ExternalAuthorization/ExternalAuthorization.Service";
 import { AuthorizationService } from "./ExternalAuthorization/IAuthorization.Service";
+import { ExternalNotificationService } from "./ExternalNotification/ExternalNotification.Service";
+import { NotificationService } from "./ExternalNotification/IExternalNotification.Service";
 
 export class TransactionService {
   private authorizationService: AuthorizationService;
+  private notificationService: ExternalNotificationService;
 
   constructor(
     private transactionRepository: ITransactionRepository,
     private userRepository: IUserRepository,
-    authorizationService: AuthorizationService = new ExternalAuthorizationService()
+    authorizationService: AuthorizationService = new ExternalAuthorizationService(),
+    notificationService: NotificationService = new ExternalNotificationService()
   ) {
     this.authorizationService = authorizationService;
+    this.notificationService = notificationService;
   }
 
   async saveTransaction({ amount, payer, payee }: Transaction) {
@@ -29,7 +34,7 @@ export class TransactionService {
     if (!userPayer) {
       throw new PayerInvalid("Pagador invalido");
     }
-    
+
     if (userPayer.usertype === "lojista") {
       throw new RetailerCannotMakeTransfer(
         "Lojista não pode fazer transferencia"
@@ -59,6 +64,16 @@ export class TransactionService {
       payee,
       date_transaction: new Date(),
     });
+
+    const emailNotification = await this.notificationService.notification(
+      userPayer,
+      userPayee,
+      amount
+    );
+
+    if (!emailNotification) {
+      console.log("Problema ao enviar a notificação pelo email");
+    }
 
     return transaction;
   }

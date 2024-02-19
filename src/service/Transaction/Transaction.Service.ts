@@ -29,7 +29,6 @@ export class TransactionService {
 
   async saveTransaction({ amount, payer, payee }: Transaction) {
     const userPayer = await this.userRepository.userById(Number(payer));
-    const userPayee = await this.userRepository.userById(Number(payee));
 
     if (!userPayer) {
       throw new PayerInvalid("Pagador invalido");
@@ -40,9 +39,13 @@ export class TransactionService {
         "Lojista não pode fazer transferencia"
       );
     }
+
+    const userPayee = await this.userRepository.userById(Number(payee));
+
     if (!userPayee) {
       throw new PayeeInvalid("Destinatário invalido");
     }
+    
     if (userPayer.balance < amount) {
       throw new PayerDoesNotHaveSufficientBalance(
         "Remetente não possui saldo suficiente"

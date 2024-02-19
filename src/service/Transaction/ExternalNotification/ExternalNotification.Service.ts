@@ -10,9 +10,9 @@ export class ExternalNotificationService implements NotificationService {
     if (data.message) {
       console.log(
         `
-        De: ${payer.fristName} ${payer.lastName},
-        Para: ${payee.email},
-        ${payer.fristName} ${payer.lastName} enviou ${amount.toLocaleString(
+        De: ${payer.firstName} ${payer.lastName} - ${payer.email},
+        Para: ${payee.firstName} ${payee.lastName} - ${payee.email},
+        ${payer.firstName} ${payer.lastName} enviou ${amount.toLocaleString(
           "pt-BR",
           {
             style: "currency",

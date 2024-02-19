@@ -5,7 +5,7 @@ export class InMemoryUserRepository implements IUserRepository {
   private users: User[] = [];
 
   async newUser({
-    fristName,
+    firstName,
     lastName,
     document,
     balance,
@@ -15,7 +15,7 @@ export class InMemoryUserRepository implements IUserRepository {
   }: User): Promise<User> {
     const newUser = {
       id: this.users.length + 1,
-      fristName,
+      firstName,
       lastName,
       document,
       balance,
@@ -29,7 +29,7 @@ export class InMemoryUserRepository implements IUserRepository {
 
   async userById(id: number): Promise<User> {
     const achou = this.users.find((user) => user.id === id);
-    return achou ? achou : ([] as unknown as User);
+    return achou;
   }
 
   async emailExist(email: string): Promise<boolean> {

@@ -1,6 +1,6 @@
 export type User = {
   id?: number;
-  fristName: string;
+  firstName: string;
   lastName: string;
   document: string;
   password: string;

@@ -1,7 +1,7 @@
 export type Transaction = {
   id?: number;
   amount: number;
-  payer: string;
-  payee: string;
+  payer: number;
+  payee: number;
   date_transaction?: Date;
 }

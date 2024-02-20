@@ -1,13 +1,13 @@
 import { test, expect, describe } from "vitest";
-import { UserService } from "./User.Service";
-import { User } from "../../models/user/User";
+import { UserService } from "./user.service";
 import { InMemoryUserRepository } from "../../repository/User/InMemory/User.Repository.InMemory";
+import { User } from "../../models/User/user";
 
 const makeSut = () => {
   const inMemoryUserRepository = new InMemoryUserRepository();
   const userService = new UserService(inMemoryUserRepository);
   const fakeUser: User = {
-    fristName: "fulano",
+    firstName: "fulano",
     lastName: "de tal",
     document: "12345678901",
     balance: 1000,

@@ -1,7 +1,7 @@
-import { TransactionRepository } from "../../repository/Transaction/Transaction.Repository";
-import { UserRepository } from "../../repository/User/User.Repository";
-import { TransactionService } from "../../service/Transaction/Transaction.Service";
-import { TransactionController } from "../../controller/Transaction/Transaction.Controller";
+import { TransactionRepository } from "../../repository/Transaction/transaction.repository";
+import { UserRepository } from "../../repository/User/user.repository";
+import { TransactionService } from "../../service/Transaction/transaction.service";
+import { TransactionController } from "../../controller/Transaction/transaction.controller";
 
 export const transactionFactory = () => {
   const transactionRepository = new TransactionRepository();

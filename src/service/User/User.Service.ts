@@ -1,6 +1,6 @@
 import User from "../../models/user/User";
 import { IUserRepository } from "../../repository/User/IUser.repository";
-import { InvalidDocument, InvalidEmail } from "./Error/User.Error";
+import { InvalidDocument, InvalidEmail } from "./Error/user.error";
 
 export class UserService {
   constructor(private userRepository: IUserRepository) {}

@@ -1,5 +1,5 @@
 import Transaction from "../../models/Transaction/transaction";
-import { ITransactionRepository } from "../../repository/Transaction/ITransaction.Repository";
+import { ITransactionRepository } from "../../repository/Transaction/ITransaction.repository";
 import { IUserRepository } from "../../repository/User/IUser.repository";
 import {
   PayeeInvalid,
@@ -7,8 +7,8 @@ import {
   PayerInvalid,
   RetailerCannotMakeTransfer,
   UnauthorizedTransaction,
-} from "./Error/Transaction.Error";
-import { ExternalAuthorizationService } from "./ExternalAuthorization/ExternalAuthorization.Service";
+} from "./Error/transaction.error";
+import { ExternalAuthorizationService } from "./ExternalAuthorization/externalAuthorization.service";
 import { AuthorizationService } from "./ExternalAuthorization/IAuthorization.service";
 import { ExternalNotificationService } from "./ExternalNotification/externalNotification.service";
 import { NotificationService } from "./ExternalNotification/IExternalNotification.service";

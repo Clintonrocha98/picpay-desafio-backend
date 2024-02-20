@@ -1,6 +1,6 @@
-import { UserRepository } from "../../repository/User/User.Repository";
-import { UserService } from "../../service/User/User.Service";
-import { UserController } from "../../controller/User/User.Controller";
+import { UserRepository } from "../../repository/User/user.repository";
+import { UserService } from "../../service/User/user.service";
+import { UserController } from "../../controller/User/user.controller";
 
 export const userFactory = () => {
   const userRepository = new UserRepository();

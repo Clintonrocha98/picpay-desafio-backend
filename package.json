@@ -8,7 +8,8 @@
     "dev": "tsx watch ./src/server.ts",
     "build": "tsup src",
     "start": "node dist/server.cjs",
-    "test": "vitest"
+    "test": "vitest --run --exclude ./src/test/*",
+    "test:e2e": "vitest --run ./src/test/*"
   },
   "keywords": [],
   "author": "",

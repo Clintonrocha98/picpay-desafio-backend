@@ -6,7 +6,7 @@ export class UserController {
 
   async newUser(req: Request, res: Response) {
     const {
-      fristName,
+      firstName,
       lastName,
       document,
       balance,
@@ -15,7 +15,7 @@ export class UserController {
       usertype,
     } = req.body;
     const NewUser = await this.userService.newUser({
-      fristName,
+      firstName,
       lastName,
       document,
       balance,

@@ -1,4 +1,4 @@
-import { User } from "../../../models/user/User";
+import User from "../../../models/user/User";
 import { NotificationService } from "./IExternalNotification.service";
 
 export class ExternalNotificationService implements NotificationService {

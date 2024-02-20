@@ -1,4 +1,4 @@
-import { Transaction } from "../../models/Transaction/transaction";
+import Transaction from "../../models/Transaction/transaction";
 import { ITransactionRepository } from "../../repository/Transaction/ITransaction.Repository";
 import { IUserRepository } from "../../repository/User/IUser.repository";
 import {
@@ -45,7 +45,7 @@ export class TransactionService {
     if (!userPayee) {
       throw new PayeeInvalid("Destinatário invalido");
     }
-    
+
     if (userPayer.balance < amount) {
       throw new PayerDoesNotHaveSufficientBalance(
         "Remetente não possui saldo suficiente"

@@ -1,5 +1,5 @@
-import { User } from "../../models/User/user";
-import { IUserRepository } from "../../repository/User/IUser.Repository";
+import User from "../../models/user/User";
+import { IUserRepository } from "../../repository/User/IUser.repository";
 import { InvalidDocument, InvalidEmail } from "./Error/User.Error";
 
 export class UserService {

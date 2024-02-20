@@ -1,4 +1,4 @@
-import { Transaction } from "../../models/Transaction/transaction";
+import Transaction from "../../models/Transaction/transaction";
 
 export interface ITransactionRepository {
   saveTransaction(data: Transaction): Promise<Transaction>;

@@ -1,7 +1,7 @@
 import { test, expect, describe } from "vitest";
 import { UserService } from "./user.service";
 import { InMemoryUserRepository } from "../../repository/User/InMemory/User.Repository.InMemory";
-import { User } from "../../models/User/user";
+import User from "../../models/user/User";
 
 const makeSut = () => {
   const inMemoryUserRepository = new InMemoryUserRepository();

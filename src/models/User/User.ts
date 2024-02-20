@@ -1,4 +1,4 @@
-export type User = {
+type User = {
   id?: number;
   firstName: string;
   lastName: string;
@@ -8,3 +8,4 @@ export type User = {
   balance: number;
   usertype: "comum" | "lojista";
 };
+export default User;

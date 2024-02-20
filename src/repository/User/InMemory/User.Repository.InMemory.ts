@@ -1,4 +1,4 @@
-import { User } from "../../../models/user/User";
+import User  from "../../../models/user/User";
 import { IUserRepository } from "../IUser.repository";
 
 export class InMemoryUserRepository implements IUserRepository {
@@ -29,7 +29,7 @@ export class InMemoryUserRepository implements IUserRepository {
 
   async userById(id: number): Promise<User> {
     const achou = this.users.find((user) => user.id === id);
-    return achou;
+    return achou as User;
   }
 
   async emailExist(email: string): Promise<boolean> {

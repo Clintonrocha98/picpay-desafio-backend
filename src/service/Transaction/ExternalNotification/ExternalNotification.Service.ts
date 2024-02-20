@@ -1,5 +1,5 @@
 import { User } from "../../../models/user/User";
-import { NotificationService } from "./IExternalNotification.Service";
+import { NotificationService } from "./IExternalNotification.service";
 
 export class ExternalNotificationService implements NotificationService {
   async notification(payer: User, payee: User, amount: number): Promise<void> {

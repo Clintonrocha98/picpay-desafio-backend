@@ -1,6 +1,6 @@
-import { Transaction } from "../../models/Transaction/Transaction";
+import { Transaction } from "../../models/Transaction/transaction";
 import { ITransactionRepository } from "../../repository/Transaction/ITransaction.Repository";
-import { IUserRepository } from "../../repository/User/IUser.Repository";
+import { IUserRepository } from "../../repository/User/IUser.repository";
 import {
   PayeeInvalid,
   PayerDoesNotHaveSufficientBalance,
@@ -9,9 +9,9 @@ import {
   UnauthorizedTransaction,
 } from "./Error/Transaction.Error";
 import { ExternalAuthorizationService } from "./ExternalAuthorization/ExternalAuthorization.Service";
-import { AuthorizationService } from "./ExternalAuthorization/IAuthorization.Service";
-import { ExternalNotificationService } from "./ExternalNotification/ExternalNotification.Service";
-import { NotificationService } from "./ExternalNotification/IExternalNotification.Service";
+import { AuthorizationService } from "./ExternalAuthorization/IAuthorization.service";
+import { ExternalNotificationService } from "./ExternalNotification/externalNotification.service";
+import { NotificationService } from "./ExternalNotification/IExternalNotification.service";
 
 export class TransactionService {
   private authorizationService: AuthorizationService;

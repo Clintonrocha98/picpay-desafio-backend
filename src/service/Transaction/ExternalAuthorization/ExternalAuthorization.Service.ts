@@ -1,4 +1,4 @@
-import { AuthorizationService } from "./IAuthorization.Service";
+import { AuthorizationService } from "./IAuthorization.service";
 
 export class ExternalAuthorizationService implements AuthorizationService {
   async authorizeTransaction(): Promise<boolean> {

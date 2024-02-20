@@ -1,4 +1,4 @@
-import { User } from "../../models/user/User";
+import { User } from "../../models/User/user";
 import { IUserRepository } from "../../repository/User/IUser.Repository";
 import { InvalidDocument, InvalidEmail } from "./Error/User.Error";
 

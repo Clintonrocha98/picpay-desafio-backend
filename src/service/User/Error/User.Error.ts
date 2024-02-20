@@ -1,4 +1,4 @@
-import { ApiError } from "../../../helpers/Api.Errors";
+import { ApiError } from "../../../helpers/api.errors";
 
 export class InvalidEmail extends ApiError {
   constructor(message: string) {

@@ -1,5 +1,5 @@
 import { User } from "../../../models/user/User";
-import { IUserRepository } from "../IUser.Repository";
+import { IUserRepository } from "../IUser.repository";
 
 export class InMemoryUserRepository implements IUserRepository {
   private users: User[] = [];

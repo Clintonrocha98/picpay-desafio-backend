@@ -1,5 +1,5 @@
 import { pool } from "../../database/database";
-import { Transaction } from "../../models/Transaction/Transaction";
+import { Transaction } from "../../models/Transaction/transaction";
 import { ITransactionRepository } from "./ITransaction.Repository";
 
 export class TransactionRepository implements ITransactionRepository {

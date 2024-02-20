@@ -1,10 +1,10 @@
 import { pool } from "../../database/database";
 import { User } from "../../models/user/User";
-import { IUserRepository } from "./IUser.Repository";
+import { IUserRepository } from "./IUser.repository";
 
 export class UserRepository implements IUserRepository {
   async newUser({
-    fristName,
+    firstName,
     lastName,
     document,
     balance,
@@ -13,8 +13,8 @@ export class UserRepository implements IUserRepository {
     usertype,
   }: User): Promise<User> {
     const newTool = await pool.query<User>(
-      "INSERT INTO users (fristName, lastName, document, balance, email, password, usertype) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [fristName, lastName, document, balance, email, password, usertype]
+      "INSERT INTO users (firstName, lastName, document, balance, email, password, usertype) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [firstName, lastName, document, balance, email, password, usertype]
     );
 
     return newTool.rows[0];

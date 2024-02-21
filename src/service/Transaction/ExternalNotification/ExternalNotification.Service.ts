@@ -1,18 +1,22 @@
-import User from "../../../models/user/User";
-import { NotificationService } from "./IExternalNotification.service";
+import { NotificationService, userProp } from "./IExternalNotification.service";
 
 export class ExternalNotificationService implements NotificationService {
-  async notification(payer: User, payee: User, amount: number): Promise<void> {
+  async notification(
+    payee: userProp,
+    payer: userProp,
+    amount: number
+  ): Promise<void> {
     const response = await fetch(
       "https://run.mocky.io/v3/54dc2cf1-3add-45b5-b5a9-6bf7e7f1f4a6"
     );
     const data = await response.json();
+
     if (data.message) {
       console.log(
         `
-        De: ${payer.firstName} ${payer.lastName} - ${payer.email},
-        Para: ${payee.firstName} ${payee.lastName} - ${payee.email},
-        ${payer.firstName} ${payer.lastName} enviou ${amount.toLocaleString(
+        De: ${payer.firstname} ${payer.lastname} - ${payer.email},
+        Para: ${payee.firstname} ${payee.lastname} - ${payee.email},
+        ${payer.firstname} ${payer.lastname} enviou ${amount.toLocaleString(
           "pt-BR",
           {
             style: "currency",

@@ -12,12 +12,12 @@ export class UserRepository implements IUserRepository {
     password,
     usertype,
   }: User): Promise<User> {
-    const newTool = await pool.query<User>(
+    const newUser = await pool.query<User>(
       "INSERT INTO users (firstName, lastName, document, balance, email, password, usertype) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
       [firstName, lastName, document, balance, email, password, usertype]
     );
 
-    return newTool.rows[0];
+    return newUser.rows[0];
   }
 
   async userById(id: number): Promise<User> {

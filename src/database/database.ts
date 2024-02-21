@@ -28,29 +28,20 @@ pool = new pg.Pool({
   password: process.env.TEST_POSTGRE_PASSWORD || process.env.POSTGRE_PASSWORD,
   database: process.env.TEST_POSTGRE_DATABASE || process.env.POSTGRE_DATABASE,
 });
-const createUsersTable = async () => {
+const createTables = async () => {
   try {
-    const createTableUsers = `
+    const tables = `
+    BEGIN;
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
-        fristName VARCHAR(255) NOT NULL,
+        firstName VARCHAR(255) NOT NULL,
         lastName VARCHAR(255) NOT NULL,
         document VARCHAR(14) UNIQUE NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL,
         balance INT,
         userType VARCHAR(7) NOT NULL
-    )`;
-    await pool.query(createTableUsers);
-    console.log("Tabela users criada com sucesso");
-  } catch (error) {
-    console.log("Problema ao criar a tabela users");
-    console.error(error);
-  }
-};
-const createTransactionsTable = async () => {
-  try {
-    const createTableTransactions = `
+    );
       CREATE TABLE IF NOT EXISTS transactions (
         id SERIAL PRIMARY KEY,
         payer INT NOT NULL,
@@ -59,16 +50,17 @@ const createTransactionsTable = async () => {
         date_transaction TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (payer) REFERENCES users(id),
         FOREIGN KEY (payee) REFERENCES users(id)
-      )`;
-    await pool.query(createTableTransactions);
-    console.log("Tabela transactions criada com sucesso");
+      );
+    COMMIT;
+    `;
+    await pool.query(tables);
+    console.log("Tabelas criadas com sucesso");
   } catch (error) {
-    console.log("Problema ao criar a tabela transactions");
+    console.log("Problema ao criar as tabelas");
     console.error(error);
   }
 };
 
-createUsersTable();
-createTransactionsTable();
+createTables();
 
 export { pool };

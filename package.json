@@ -5,11 +5,15 @@
   "main": "./src/server.js",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch ./src/server.ts",
+    "dev": "dotenv -e .env.test tsx ./src/server.ts",
     "build": "tsup src",
     "start": "node dist/server.cjs",
-    "test": "vitest --run --exclude ./src/test/*",
-    "test:e2e": "vitest --run ./src/test/*"
+    "db:dev": "docker compose up db -d",
+    "db:dev:rm": "docker compose rm db -s -f -v",
+    "db:test": "docker compose up db-test -d",
+    "db:test:rm": "docker compose rm db-test -s -f -v",
+    "test": "vitest run --exclude ./src/test/*",
+    "test:e2e": "dotenv -e .env.test vitest run ./src/test/transaction.e2e.spec.ts"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +30,7 @@
     "@types/node": "^20.11.7",
     "@types/pg": "^8.11.0",
     "@types/supertest": "^6.0.2",
+    "dotenv-cli": "^7.3.0",
     "supertest": "^6.3.4",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",

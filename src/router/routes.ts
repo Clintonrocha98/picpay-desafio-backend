@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
-import { userFactory } from "../factory/User/User.factory";
-import { transactionFactory } from "../factory/Transaction/Transaction.Factory";
+import { userFactory } from "../factory/User/user.factory";
+import { transactionFactory } from "../factory/Transaction/transaction.factory";
 
 const routes = Router();
 

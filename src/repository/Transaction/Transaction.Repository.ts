@@ -9,11 +9,11 @@ export class TransactionRepository implements ITransactionRepository {
     payee,
     date_transaction,
   }: Transaction): Promise<Transaction> {
-    const newTool = await pool.query<Transaction>(
+    const newTransaction = await pool.query<Transaction>(
       "INSERT INTO transactions (amount, payer, payee, date_transaction) VALUES ($1, $2, $3, $4) RETURNING *",
       [amount, payer, payee, date_transaction]
     );
-    return newTool.rows[0];
+    return newTransaction.rows[0];
   }
   async payeeUpdatebalance(payee_id: number, amount: number): Promise<void> {
     await pool.query("UPDATE users SET balance = balance + $1 WHERE id = $2", [

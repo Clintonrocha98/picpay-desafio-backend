@@ -1,5 +1,8 @@
-import User from "../../../models/user/User";
-
+export type userProp = {
+  firstname: string;
+  lastname: string;
+  email: string;
+};
 export interface NotificationService {
-  notification(payer: User, payee: User, amount: number): Promise<void>;
+  notification(payee: userProp, payer: userProp, amount: number): Promise<void>;
 }

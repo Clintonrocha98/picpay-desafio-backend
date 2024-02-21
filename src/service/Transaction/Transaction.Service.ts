@@ -1,5 +1,5 @@
 import Transaction from "../../models/Transaction/transaction";
-import { ITransactionRepository } from "../../repository/Transaction/ITransaction.repository";
+import { ITransactionRepository } from "../../repository/Transaction/ITransaction.Repository";
 import { IUserRepository } from "../../repository/User/IUser.repository";
 import {
   PayeeInvalid,
@@ -68,7 +68,18 @@ export class TransactionService {
       date_transaction: new Date(),
     });
 
-    await this.notificationService.notification(userPayer, userPayee, amount);
+    const payerProps = {
+      firstname: userPayer["firstname"] as string,
+      lastname: userPayer["lastname"] as string,
+      email: userPayer.email,
+    };
+    const payeeProps = {
+      firstname: userPayee["firstname"] as string,
+      lastname: userPayee["lastname"] as string,
+      email: userPayee.email,
+    };
+
+    await this.notificationService.notification(payerProps, payeeProps, amount);
 
     return transaction;
   }

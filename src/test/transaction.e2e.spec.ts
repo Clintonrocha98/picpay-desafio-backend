@@ -1,4 +1,4 @@
-import { test, expect, describe, afterEach } from "vitest";
+import { test, expect, describe, afterEach, beforeEach } from "vitest";
 import { app } from "../config/express";
 import { pool } from "../database/database";
 import request from "supertest";
@@ -6,16 +6,7 @@ import User from "../models/user/User";
 import Transaction from "../models/Transaction/transaction";
 import { UserRepository } from "../repository/User/user.repository";
 
-const fakeUser: User = {
-  firstName: "fulano",
-  lastName: "de tal",
-  document: "12345678901",
-  balance: 1000,
-  email: "fulano@email.com",
-  password: "123456789",
-  usertype: "comum",
-};
-let fakeTransaction: Transaction;
+const BASE_URL = "http://localhost:3000";
 
 const clearTables = async () => {
   try {
@@ -31,41 +22,102 @@ const clearTables = async () => {
   }
 };
 
-afterEach(async () => {
+const makeSut = async () => {
+  const fakeUser: User = {
+    firstName: "fulano",
+    lastName: "de tal",
+    document: "12345678901",
+    balance: 1000,
+    email: "fulano@email.com",
+    password: "123456789",
+    usertype: "comum",
+  };
+  const userRepository = new UserRepository();
+
+  const fakeTransaction: Transaction = {
+    payer: 1,
+    payee: 2,
+    amount: 100,
+  };
+  return { userRepository, fakeTransaction, fakeUser };
+};
+
+beforeEach(async () => {
   await clearTables();
 });
+
 describe("E2E", () => {
   test("deve ser possivel criar um usuario", async () => {
+    const { fakeUser } = await makeSut();
     const res = await request(app).post("/user").send(fakeUser);
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty("id");
   });
-  test("deve ser possivel fazer uma transação", async () => {
-    const userRepository = new UserRepository();
+  test("não deve ser possivel criar um usuario, email invalido", async () => {
+    const { fakeUser, userRepository } = await makeSut();
+
+    await userRepository.newUser(fakeUser);
+
+    const request = await fetch(`${BASE_URL}/user`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(fakeUser),
+    });
+
+    expect(request.status).toBe(401);
+
+    const response = await request.json();
+
+    expect(response).toEqual({ error: "Email invalido", code: 401 });
+  });
+  test("não deve ser possivel criar um usuario, documento invalido", async () => {
+    const { fakeUser, userRepository } = await makeSut();
+
+    await userRepository.newUser(fakeUser);
+
+    const request = await fetch(`${BASE_URL}/user`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...fakeUser, email: "emaildiferente@email.com" }),
+    });
+
+    expect(request.status).toBe(401);
+
+    const response = await request.json();
+
+    expect(response).toEqual({ error: "Document invalid", code: 401 });
+  });
+  test("deve ser possivel fazer uma transação e a conta do usuario deve ser alterado", async () => {
+    const { fakeTransaction, userRepository, fakeUser } = await makeSut();
 
     const [comum, lojista] = await Promise.all([
       userRepository.newUser(fakeUser),
       userRepository.newUser({
         ...fakeUser,
-        document: "123",
-        email: "email@email.com",
         usertype: "lojista",
+        document: "123",
+        email: "fakeemail@email.com",
       }),
     ]);
-
-    fakeTransaction = {
-      payer: comum.id as number,
-      payee: lojista.id as number,
-      amount: 100,
-    };
-
     const res = await request(app)
       .post("/transaction")
-      .send(fakeTransaction)
+      .send({ ...fakeTransaction, payer: comum.id, payee: lojista.id })
       .expect(201);
-    
+
+    const [comumByID, lojistaByID] = await Promise.all([
+      userRepository.userById(comum.id as number),
+      userRepository.userById(lojista.id as number),
+    ]);
+
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty("id");
     expect(res.body).toHaveProperty("date_transaction");
+    expect(comumByID.balance).toEqual(900);
+    expect(lojistaByID.balance).toEqual(1100);
   });
+
 });

@@ -1,6 +1,12 @@
 import User from "../../models/user/User";
 import { IUserRepository } from "../../repository/User/IUser.repository";
-import { InvalidDocument, InvalidEmail } from "./Error/user.error";
+import {
+  InvalidDocument,
+  InvalidEmail,
+  InvalidUser,
+  PayerDoesNotHaveSufficientBalance,
+  RetailerCannotMakeTransfer,
+} from "./Error/user.error";
 
 export class UserService {
   constructor(private userRepository: IUserRepository) {}
@@ -21,5 +27,28 @@ export class UserService {
     }
     const newUser = await this.userRepository.newUser(user);
     return newUser;
+  }
+
+  async userById(id: number) {
+    const user = await this.userRepository.userById(id);
+
+    if (!user) {
+      throw new InvalidUser("Usuario invalido");
+    }
+    return user;
+  }
+
+  async validateTransaction(user: User, amount: number) {
+    if (user.usertype === "lojista") {
+      throw new RetailerCannotMakeTransfer(
+        "Lojista não pode fazer transferencia"
+      );
+    }
+
+    if (user.balance < amount) {
+      throw new PayerDoesNotHaveSufficientBalance(
+        "Remetente não possui saldo suficiente"
+      );
+    }
   }
 }

@@ -3,10 +3,7 @@ import { app } from "../config/express";
 import { pool } from "../database/database";
 import request from "supertest";
 import User from "../models/user/User";
-import Transaction from "../models/Transaction/transaction";
 import { UserRepository } from "../repository/User/user.repository";
-
-const BASE_URL = "http://localhost:3000";
 
 const clearTables = async () => {
   try {
@@ -21,25 +18,16 @@ const clearTables = async () => {
     console.error("Erro ao esvaziar tabelas antes dos testes:", error);
   }
 };
+const userRepository = new UserRepository();
 
-const makeSut = async () => {
-  const fakeUser: User = {
-    firstName: "fulano",
-    lastName: "de tal",
-    document: "12345678901",
-    balance: 1000,
-    email: "fulano@email.com",
-    password: "123456789",
-    usertype: "comum",
-  };
-  const userRepository = new UserRepository();
-
-  const fakeTransaction: Transaction = {
-    payer: 1,
-    payee: 2,
-    amount: 100,
-  };
-  return { userRepository, fakeTransaction, fakeUser };
+const fakeUser: User = {
+  firstName: "fulano",
+  lastName: "de tal",
+  document: "12345678901",
+  balance: 1000,
+  email: "fulano@email.com",
+  password: "123456789",
+  usertype: "comum",
 };
 
 beforeEach(async () => {
@@ -47,53 +35,35 @@ beforeEach(async () => {
 });
 
 describe("E2E", () => {
-  test("deve ser possivel criar um usuario", async () => {
-    const { fakeUser } = await makeSut();
+  test("it must be possible to create a user", async () => {
     const res = await request(app).post("/user").send(fakeUser);
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty("id");
   });
-  test("não deve ser possivel criar um usuario, email invalido", async () => {
-    const { fakeUser, userRepository } = await makeSut();
 
+  test("It should not be possible to create a user, invalid email", async () => {
     await userRepository.newUser(fakeUser);
 
-    const request = await fetch(`${BASE_URL}/user`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(fakeUser),
-    });
+    const res = await request(app).post("/user").send(fakeUser);
 
-    expect(request.status).toBe(401);
+    expect(res.status).toBe(401);
 
-    const response = await request.json();
-
-    expect(response).toEqual({ error: "Email invalido", code: 401 });
+    expect(res.body).toEqual({ error: "Email invalido", code: 401 });
   });
-  test("não deve ser possivel criar um usuario, documento invalido", async () => {
-    const { fakeUser, userRepository } = await makeSut();
 
+  test("It should not be possible to create a user, invalid document", async () => {
     await userRepository.newUser(fakeUser);
 
-    const request = await fetch(`${BASE_URL}/user`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ ...fakeUser, email: "emaildiferente@email.com" }),
-    });
+    const response = await request(app)
+      .post("/user")
+      .send({ ...fakeUser, email: "emaildiferente@email.com" });
 
-    expect(request.status).toBe(401);
-
-    const response = await request.json();
+    expect(response.status).toBe(401);
 
     expect(response).toEqual({ error: "Document invalid", code: 401 });
   });
-  test("deve ser possivel fazer uma transação e a conta do usuario deve ser alterado", async () => {
-    const { fakeTransaction, userRepository, fakeUser } = await makeSut();
 
+  test("deve ser possivel fazer uma transação e o saldo dos usuarios devem ser alterado", async () => {
     const [comum, lojista] = await Promise.all([
       userRepository.newUser(fakeUser),
       userRepository.newUser({
@@ -103,9 +73,10 @@ describe("E2E", () => {
         email: "fakeemail@email.com",
       }),
     ]);
+
     const res = await request(app)
       .post("/transaction")
-      .send({ ...fakeTransaction, payer: comum.id, payee: lojista.id })
+      .send({ amount: 100, payer: comum.id, payee: lojista.id })
       .expect(201);
 
     const [comumByID, lojistaByID] = await Promise.all([
@@ -119,5 +90,4 @@ describe("E2E", () => {
     expect(comumByID.balance).toEqual(900);
     expect(lojistaByID.balance).toEqual(1100);
   });
-
 });

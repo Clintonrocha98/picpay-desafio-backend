@@ -37,7 +37,9 @@ beforeEach(async () => {
 describe("E2E", () => {
   test("it must be possible to create a user", async () => {
     const res = await request(app).post("/user").send(fakeUser);
+
     expect(res.status).toBe(201);
+    
     expect(res.body).toHaveProperty("id");
   });
 

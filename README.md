@@ -39,7 +39,7 @@ git clone git@github.com:Clintonrocha98/picpay-desafio-backend.git
 
 Use `.env.example` como referência para criar seu arquivo de configuração`.env` com as informações do banco de dados principal.
 
-No caso do banco para testes E2E, o arquivo deve ser nomeado como `.env.test` e segue a mesma estrutura do `.env.example`.
+No caso do banco para testes E2E, é necessario criar outro arquivo e ser nomeado como `.env.test` ele segue a mesma estrutura do `.env.example`.
 
 ```yaml
 POSTGRE_USER=usuario

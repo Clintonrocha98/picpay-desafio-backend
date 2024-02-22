@@ -1,4 +1,4 @@
-import { test, expect, describe, afterEach, beforeEach } from "vitest";
+import { test, expect, describe, beforeEach } from "vitest";
 import { app } from "../config/express";
 import { pool } from "../database/database";
 import request from "supertest";
@@ -63,7 +63,7 @@ describe("E2E", () => {
     expect(response).toEqual({ error: "Document invalid", code: 401 });
   });
 
-  test("deve ser possivel fazer uma transação e o saldo dos usuarios devem ser alterado", async () => {
+  test("it must be possible to make a transaction and the users' balance must be changed", async () => {
     const [comum, lojista] = await Promise.all([
       userRepository.newUser(fakeUser),
       userRepository.newUser({
@@ -90,4 +90,5 @@ describe("E2E", () => {
     expect(comumByID.balance).toEqual(900);
     expect(lojistaByID.balance).toEqual(1100);
   });
+  
 });

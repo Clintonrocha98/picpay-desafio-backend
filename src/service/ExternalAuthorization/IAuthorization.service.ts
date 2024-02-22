@@ -1,3 +1,3 @@
-export interface AuthorizationService {
+export interface IAuthorizationService {
   authorizeTransaction(): Promise<boolean>;
 }

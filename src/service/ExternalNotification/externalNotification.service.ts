@@ -1,6 +1,9 @@
-import { NotificationService, userProp } from "./IExternalNotification.service";
+import {
+  INotificationService,
+  userProp,
+} from "./IExternalNotification.service";
 
-export class ExternalNotificationService implements NotificationService {
+export class ExternalNotificationService implements INotificationService {
   async notification(
     payee: userProp,
     payer: userProp,

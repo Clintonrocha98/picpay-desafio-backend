@@ -1,11 +1,13 @@
-import { test, expect, describe } from "vitest";
+import { test, expect, describe, vi } from "vitest";
 import { InMemoryTransactionRepository } from "../../repository/Transaction/InMemory/transaction.repository.InMemory";
 import { InMemoryUserRepository } from "../../repository/User/InMemory/user.repository.InMemory";
 import { TransactionService } from "./transaction.service";
 import User from "../../models/user/User";
 import Transaction from "../../models/Transaction/transaction";
+import { ExternalAuthorizationService } from "../ExternalAuthorization/externalAuthorization.service";
+import { ExternalNotificationService } from "../ExternalNotification/externalNotification.service";
 
-const makeSut = () => {
+const makeSut = (authorization = true) => {
   const fakeUser: User = {
     firstName: "fulano",
     lastName: "de tal",
@@ -24,7 +26,19 @@ const makeSut = () => {
     usertype: "lojista",
   });
   const inMemoryTransaction = new InMemoryTransactionRepository();
-  const service = new TransactionService(inMemoryTransaction, inMemoryUser);
+
+  const fakeAuthorization: ExternalAuthorizationService = {
+    authorizeTransaction: vi.fn().mockResolvedValue(authorization),
+  };
+
+  const notificationService = new ExternalNotificationService();
+
+  const service = new TransactionService(
+    inMemoryTransaction,
+    inMemoryUser,
+    fakeAuthorization,
+    notificationService
+  );
   const fakeTransaction: Transaction = {
     amount: 100,
     payer: 1,
@@ -35,14 +49,14 @@ const makeSut = () => {
 };
 
 describe("transaction service", () => {
-  test("deve ser possivel efetura uma transação", async () => {
+  test("it must be possible to carry out a transaction", async () => {
     const { service, fakeTransaction } = makeSut();
     const transaction = await service.saveTransaction(fakeTransaction);
 
     expect(transaction).toHaveProperty("id");
     expect(transaction).toHaveProperty("date_transaction");
   });
-  test("não deve ser possivel efetuar uma transação, pagador invalido", async () => {
+  test("it must not be possible to carry out a transaction, invalid payer", async () => {
     const { service, fakeTransaction } = makeSut();
 
     await expect(
@@ -52,7 +66,7 @@ describe("transaction service", () => {
       })
     ).rejects.toThrow("Pagador invalido");
   });
-  test("não deve ser possivel efetuar uma transação, Lojista não pode fazer transferencia", async () => {
+  test("it must not be possible to carry out a transaction, Shopkeeper cannot make a transfer", async () => {
     const { service, fakeTransaction } = makeSut();
 
     await expect(
@@ -63,7 +77,7 @@ describe("transaction service", () => {
       })
     ).rejects.toThrow("Lojista não pode fazer transferencia");
   });
-  test("não deve ser possivel efetuar uma transação, Remetente invalido", async () => {
+  test("it must not be possible to carry out a transaction, Invalid sender", async () => {
     const { service, fakeTransaction } = makeSut();
 
     await expect(
@@ -73,7 +87,7 @@ describe("transaction service", () => {
       })
     ).rejects.toThrow("Destinatário invalido");
   });
-  test("não deve ser possivel efetuar uma transação, Nâo possui saldo", async () => {
+  test("it must not be possible to carry out a transaction, there is no balance", async () => {
     const { service, fakeTransaction } = makeSut();
 
     await expect(
@@ -82,5 +96,12 @@ describe("transaction service", () => {
         amount: 9999,
       })
     ).rejects.toThrow("Remetente não possui saldo suficiente");
+  });
+  test("it must not be possible to carry out a transaction, Unauthorized transaction", async () => {
+    const { service, fakeTransaction } = makeSut(false);
+
+    await expect(service.saveTransaction(fakeTransaction)).rejects.toThrow(
+      "Transação não autorizada"
+    );
   });
 });

@@ -8,24 +8,16 @@ import {
   RetailerCannotMakeTransfer,
   UnauthorizedTransaction,
 } from "./Error/transaction.error";
-import { ExternalAuthorizationService } from "./ExternalAuthorization/externalAuthorization.service";
-import { AuthorizationService } from "./ExternalAuthorization/IAuthorization.service";
-import { ExternalNotificationService } from "./ExternalNotification/externalNotification.service";
-import { NotificationService } from "./ExternalNotification/IExternalNotification.service";
+import { IAuthorizationService } from "../ExternalAuthorization/IAuthorization.service";
+import { INotificationService } from "../ExternalNotification/IExternalNotification.service";
 
 export class TransactionService {
-  private authorizationService: AuthorizationService;
-  private notificationService: ExternalNotificationService;
-
   constructor(
     private transactionRepository: ITransactionRepository,
     private userRepository: IUserRepository,
-    authorizationService: AuthorizationService = new ExternalAuthorizationService(),
-    notificationService: NotificationService = new ExternalNotificationService()
-  ) {
-    this.authorizationService = authorizationService;
-    this.notificationService = notificationService;
-  }
+    private authorizationService: IAuthorizationService,
+    private notificationService: INotificationService
+  ) {}
 
   async saveTransaction({ amount, payer, payee }: Transaction) {
     const userPayer = await this.userRepository.userById(Number(payer));
@@ -69,13 +61,13 @@ export class TransactionService {
     });
 
     const payerProps = {
-      firstname: userPayer["firstname"] as string,
-      lastname: userPayer["lastname"] as string,
+      firstname: userPayer.firstName,
+      lastname: userPayer.lastName,
       email: userPayer.email,
     };
     const payeeProps = {
-      firstname: userPayee["firstname"] as string,
-      lastname: userPayee["lastname"] as string,
+      firstname: userPayee.firstName,
+      lastname: userPayee.lastName,
       email: userPayee.email,
     };
 

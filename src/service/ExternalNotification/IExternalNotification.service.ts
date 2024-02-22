@@ -3,6 +3,6 @@ export type userProp = {
   lastname: string;
   email: string;
 };
-export interface NotificationService {
+export interface INotificationService {
   notification(payee: userProp, payer: userProp, amount: number): Promise<void>;
 }

@@ -98,7 +98,7 @@ npm run test:e2e
   "balance": 1000,
   "email": "fulano@email.com",
   "password": "123456789",
-  "usertype": "comum" //comum or lojista
+  "usertype": "lojista"
 }
 ```
 

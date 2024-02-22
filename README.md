@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-    <b>Minha solução para o desafio do Picpay.</b>
+    <b>My solution to the <a href="https://github.com/PicPay/picpay-desafio-backend/tree/master?tab=readme-ov-file" target="_blank">Picpay challenge</a>.</b>
 </p>
 
 <h2 id="technologies">💻 Technologies</h2>
@@ -25,11 +25,11 @@
 
 - [NodeJS](https://nodejs.org/en)
 - [Git](https://git-scm.com)
-- Caso não estiver usando docker, é ser necessário ter [PostgreSQL](https://www.postgresql.org).
+- If you are not using Docker, you must have [PostgreSQL](https://www.postgresql.org).
 
 <h3>Cloning</h3>
 
-Como clonar esse projeto:
+How to clone this project:
 
 ```bash
 git clone git@github.com:Clintonrocha98/picpay-desafio-backend.git
@@ -37,12 +37,12 @@ git clone git@github.com:Clintonrocha98/picpay-desafio-backend.git
 
 <h3>Config .env variables</h2>
 
-Use `.env.example` como referência para criar seu arquivo de configuração`.env` com as informações do banco de dados principal.
+Use `.env.example` as a reference to create your `.env` configuration file with the main database information.
 
-No caso do banco para testes E2E, é necessário criar outro arquivo e ser nomeado como `.env.test` ele segue a mesma estrutura do `.env.example`.
+In the case of the E2E test bench, it is necessary to create another file and be named `.env.test`, it follows the same structure as `.env.example`.
 
 ```yaml
-POSTGRE_USER=usuario
+POSTGRE_USER=user
 POSTGRE_HOST=host
 POSTGRE_PASSWORD=password
 POSTGRE_DATABASE=database
@@ -50,13 +50,13 @@ POSTGRE_DATABASE=database
 
 <h3>Starting</h3>
 
-Se você estiver usando um banco local:
+If you are using a local bank:
 
 ```bash
 npm run dev
 ```
 
-Caso você for usar docker:
+If you are going to use docker:
 
 ```bash
 npm run db:dev
@@ -65,13 +65,13 @@ npm run dev
 
 <h3>Testing</h3>
 
-Testes unitários:
+Unitary tests:
 
 ```bash
 npm run test
 ```
 
-Testes E2E:
+E2E Tests:
 
 ```bash
 npm run db:test
@@ -83,8 +83,8 @@ npm run test:e2e
 ​
 | route | description  
 |----------------------|-----------------------------------------------------
-| <kbd>POST /user</kbd> | Cria um novo usuário [detalhes da request](#post-user-detail)
-| <kbd>POST /transaction</kbd> | Faz uma transação entre dois usuários [detalhes da request](#post-transaction-detail)
+| <kbd>POST /user</kbd> | Create a new user [request details](#post-user-detail)
+| <kbd>POST /transaction</kbd> | Makes a transaction between two users [request details](#post-transaction-detail)
 
 <h3 id="post-user-detail">POST /user</h3>
 
@@ -92,13 +92,13 @@ npm run test:e2e
 
 ```json
 {
-  "firstName": "fulano",
-  "lastName": "de tal",
-  "document": "12345678901",
-  "balance": 1000,
-  "email": "fulano@email.com",
-  "password": "123456789",
-  "usertype": "comum" //comum ou lojista
+  "firstName": "fulano",
+  "lastName": "de tal",
+  "document": "12345678901",
+  "balance": 1000,
+  "email": "fulano@email.com",
+  "password": "123456789",
+  "usertype": "comum" //comum or lojista
 }
 ```
 
@@ -108,9 +108,9 @@ npm run test:e2e
 
 ```json
 {
-  "payer": 1,
-  "payee": 2,
-  "amount": 100
+  "payer": 1,
+  "payee": 2,
+  "amount": 100
 }
 ```
 
@@ -118,10 +118,9 @@ npm run test:e2e
 
 ```json
 {
-  "payer": 1,
-  "payee": 2,
-  "amount": 100,
-  "date_transaction": "Thu Feb 22 2024 10:26:18 GMT-0300 (Horário Padrão de Brasília)"
+  "payer": 1,
+  "payee": 2,
+  "amount": 100,
+  "date_transaction": "Thu Feb 22 2024 10:26:18 GMT-0300 (Horário Padrão de Brasília)"
 }
 ```
-

@@ -1,48 +1,23 @@
 import Transaction from "../../models/Transaction/transaction";
 import { ITransactionRepository } from "../../repository/Transaction/ITransaction.Repository";
-import { IUserRepository } from "../../repository/User/IUser.repository";
-import {
-  PayeeInvalid,
-  PayerDoesNotHaveSufficientBalance,
-  PayerInvalid,
-  RetailerCannotMakeTransfer,
-  UnauthorizedTransaction,
-} from "./Error/transaction.error";
+import { UnauthorizedTransaction } from "./Error/transaction.error";
 import { IAuthorizationService } from "../ExternalAuthorization/IAuthorization.service";
 import { INotificationService } from "../ExternalNotification/IExternalNotification.service";
+import { UserService } from "../User/user.service";
 
 export class TransactionService {
   constructor(
     private transactionRepository: ITransactionRepository,
-    private userRepository: IUserRepository,
+    private userSerivce: UserService,
     private authorizationService: IAuthorizationService,
     private notificationService: INotificationService
   ) {}
 
   async saveTransaction({ amount, payer, payee }: Transaction) {
-    const userPayer = await this.userRepository.userById(Number(payer));
+    const userPayer = await this.userSerivce.userById(payer);
+    const userPayee = await this.userSerivce.userById(payee);
 
-    if (!userPayer) {
-      throw new PayerInvalid("Pagador invalido");
-    }
-
-    if (userPayer.usertype === "lojista") {
-      throw new RetailerCannotMakeTransfer(
-        "Lojista não pode fazer transferencia"
-      );
-    }
-
-    const userPayee = await this.userRepository.userById(Number(payee));
-
-    if (!userPayee) {
-      throw new PayeeInvalid("Destinatário invalido");
-    }
-
-    if (userPayer.balance < amount) {
-      throw new PayerDoesNotHaveSufficientBalance(
-        "Remetente não possui saldo suficiente"
-      );
-    }
+    await this.userSerivce.validateTransaction(userPayer, amount);
 
     const isAuthorized = await this.authorizationService.authorizeTransaction();
 
@@ -51,6 +26,7 @@ export class TransactionService {
     }
 
     await this.transactionRepository.payeeUpdatebalance(Number(payee), amount);
+
     await this.transactionRepository.payerUpdatebalance(Number(payer), amount);
 
     const transaction = await this.transactionRepository.saveTransaction({

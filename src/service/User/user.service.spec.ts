@@ -20,13 +20,13 @@ const makeSut = () => {
 };
 
 describe("User service", () => {
-  test("deve ser possivel criar um usuario", async () => {
+  test("it must be possible to create a user", async () => {
     const { fakeUser, userService } = makeSut();
     const user = await userService.newUser(fakeUser);
 
     expect(user).toHaveProperty("id");
   });
-  test("Não deve ser possivel criar um usuario com email que já existe", async () => {
+  test("It should not be possible to create a user with an email that already exists", async () => {
     const { fakeUser, userService } = makeSut();
     await userService.newUser(fakeUser);
 
@@ -34,7 +34,7 @@ describe("User service", () => {
       "Email invalido"
     );
   });
-  test("Não deve ser possivel criar um usuario com documento que já existe", async () => {
+  test("It should not be possible to create a user with a document that already exists", async () => {
     const { fakeUser, userService } = makeSut();
     await userService.newUser({
       ...fakeUser,
@@ -44,5 +44,31 @@ describe("User service", () => {
     await expect(userService.newUser(fakeUser)).rejects.toThrow(
       "Document invalid"
     );
+  });
+  test("it must be possible to find a user by id", async () => {
+    const { fakeUser, userService } = makeSut();
+
+    const user = await userService.newUser(fakeUser);
+
+    expect(await userService.userById(Number(user.id))).toEqual(user);
+  });
+  test("It should not be possible to find a user by ID", async () => {
+    const { userService } = makeSut();
+
+    await expect(userService.userById(999)).rejects.toThrow("Usuario invalido");
+  });
+  test("It must not be possible to validate the transfer, the retailer cannot make the transfer", async () => {
+    const { fakeUser, userService } = makeSut();
+
+    await expect(
+      userService.validateTransaction({ ...fakeUser, usertype: "lojista" }, 10)
+    ).rejects.toThrow("Lojista não pode fazer transferencia");
+  });
+  test("It must not be possible to validate the transfer, the sender does not have sufficient funds", async () => {
+    const { fakeUser, userService } = makeSut();
+
+    await expect(
+      userService.validateTransaction({ ...fakeUser }, 9999)
+    ).rejects.toThrow("Remetente não possui saldo suficiente");
   });
 });

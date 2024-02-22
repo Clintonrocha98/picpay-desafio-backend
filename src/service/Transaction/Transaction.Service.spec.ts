@@ -6,6 +6,7 @@ import User from "../../models/user/User";
 import Transaction from "../../models/Transaction/transaction";
 import { ExternalAuthorizationService } from "../ExternalAuthorization/externalAuthorization.service";
 import { ExternalNotificationService } from "../ExternalNotification/externalNotification.service";
+import { UserService } from "../User/user.service";
 
 const makeSut = (authorization = true) => {
   const fakeUser: User = {
@@ -18,6 +19,7 @@ const makeSut = (authorization = true) => {
     usertype: "comum",
   };
   const inMemoryUser = new InMemoryUserRepository();
+
   inMemoryUser.newUser(fakeUser);
   inMemoryUser.newUser({
     ...fakeUser,
@@ -33,9 +35,11 @@ const makeSut = (authorization = true) => {
 
   const notificationService = new ExternalNotificationService();
 
+  const userService = new UserService(inMemoryUser);
+
   const service = new TransactionService(
     inMemoryTransaction,
-    inMemoryUser,
+    userService,
     fakeAuthorization,
     notificationService
   );
@@ -64,7 +68,7 @@ describe("transaction service", () => {
         ...fakeTransaction,
         payer: 999,
       })
-    ).rejects.toThrow("Pagador invalido");
+    ).rejects.toThrow("Usuario invalido");
   });
   test("it must not be possible to carry out a transaction, Shopkeeper cannot make a transfer", async () => {
     const { service, fakeTransaction } = makeSut();
@@ -85,7 +89,7 @@ describe("transaction service", () => {
         ...fakeTransaction,
         payee: 999,
       })
-    ).rejects.toThrow("Destinatário invalido");
+    ).rejects.toThrow("Usuario invalido");
   });
   test("it must not be possible to carry out a transaction, there is no balance", async () => {
     const { service, fakeTransaction } = makeSut();

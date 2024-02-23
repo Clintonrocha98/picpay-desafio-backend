@@ -39,7 +39,7 @@ describe("E2E", () => {
     const res = await request(app).post("/user").send(fakeUser);
 
     expect(res.status).toBe(201);
-    
+
     expect(res.body).toHaveProperty("id");
   });
 
@@ -62,7 +62,7 @@ describe("E2E", () => {
 
     expect(response.status).toBe(401);
 
-    expect(response).toEqual({ error: "Document invalid", code: 401 });
+    expect(response.body).toEqual({ error: "Document invalid", code: 401 });
   });
 
   test("it must be possible to make a transaction and the users' balance must be changed", async () => {
@@ -92,5 +92,4 @@ describe("E2E", () => {
     expect(comumByID.balance).toEqual(900);
     expect(lojistaByID.balance).toEqual(1100);
   });
-  
 });

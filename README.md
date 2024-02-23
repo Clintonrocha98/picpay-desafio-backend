@@ -53,12 +53,14 @@ POSTGRE_DATABASE=database
 If you are using a local bank:
 
 ```bash
+npm install
 npm run dev
 ```
 
 If you are going to use docker:
 
 ```bash
+npm install
 npm run db:dev
 npm run dev
 ```

@@ -127,3 +127,64 @@ npm run test:e2e
   "date_transaction": "Thu Feb 22 2024 10:26:18 GMT-0300 (Horário Padrão de Brasília)"
 }
 ```
+
+```
+📦src
+ ┣ 📂config
+ ┃ ┗ 📜express.ts
+ ┣ 📂controller
+ ┃ ┣ 📂Transaction
+ ┃ ┃ ┗ 📜transaction.controller.ts
+ ┃ ┗ 📂User
+ ┃ ┃ ┗ 📜user.controller.ts
+ ┣ 📂database
+ ┃ ┗ 📜database.ts
+ ┣ 📂factory
+ ┃ ┣ 📂Transaction
+ ┃ ┃ ┗ 📜transaction.factory.ts
+ ┃ ┗ 📂User
+ ┃ ┃ ┗ 📜user.factory.ts
+ ┣ 📂helpers
+ ┃ ┗ 📜api.errors.ts
+ ┣ 📂middleware
+ ┃ ┗ 📜error.middleware.ts
+ ┣ 📂models
+ ┃ ┣ 📂Transaction
+ ┃ ┃ ┗ 📜transaction.ts
+ ┃ ┗ 📂User
+ ┃ ┃ ┗ 📜user.ts
+ ┣ 📂repository
+ ┃ ┣ 📂Transaction
+ ┃ ┃ ┣ 📂InMemory
+ ┃ ┃ ┃ ┗ 📜transaction.repository.InMemory.ts
+ ┃ ┃ ┣ 📜ITransaction.repository.ts
+ ┃ ┃ ┗ 📜transaction.repository.ts
+ ┃ ┗ 📂User
+ ┃ ┃ ┣ 📂InMemory
+ ┃ ┃ ┃ ┗ 📜user.repository.inMemory.ts
+ ┃ ┃ ┣ 📜IUser.repository.ts
+ ┃ ┃ ┗ 📜user.repository.ts
+ ┣ 📂router
+ ┃ ┗ 📜routes.ts
+ ┣ 📂service
+ ┃ ┣ 📂ExternalAuthorization
+ ┃ ┃ ┣ 📜externalAuthorization.service.spec.ts
+ ┃ ┃ ┣ 📜externalAuthorization.service.ts
+ ┃ ┃ ┗ 📜IAuthorization.service.ts
+ ┃ ┣ 📂ExternalNotification
+ ┃ ┃ ┣ 📜externalNotification.service.ts
+ ┃ ┃ ┗ 📜IExternalNotification.service.ts
+ ┃ ┣ 📂Transaction
+ ┃ ┃ ┣ 📂Error
+ ┃ ┃ ┃ ┗ 📜transaction.error.ts
+ ┃ ┃ ┣ 📜transaction.service.spec.ts
+ ┃ ┃ ┗ 📜transaction.service.ts
+ ┃ ┗ 📂User
+ ┃ ┃ ┣ 📂Error
+ ┃ ┃ ┃ ┗ 📜user.error.ts
+ ┃ ┃ ┣ 📜user.service.spec.ts
+ ┃ ┃ ┗ 📜user.service.ts
+ ┣ 📂test
+ ┃ ┗ 📜transaction.e2e.spec.ts
+ ┗ 📜server.ts
+```

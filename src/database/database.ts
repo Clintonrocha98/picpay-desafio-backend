@@ -40,6 +40,6 @@ const createTables = async () => {
   }
 };
 
-createTables();
+await createTables();
 
 export { pool };

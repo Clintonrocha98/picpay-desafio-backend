@@ -128,6 +128,8 @@ npm run test:e2e
 }
 ```
 
+<h2>Files</h2>
+
 ```
 📦src
  ┣ 📂config
